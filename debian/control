@@ -1,5 +1,5 @@
 Source: networktablet
-Section: unknown
+Section: graphics
 Priority: optional
 Maintainer: Jarrad Whitaker <jarrad.whitaker@gmail.com>
 Build-Depends: debhelper (>= 9)
