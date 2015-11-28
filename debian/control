@@ -1,11 +1,11 @@
 Source: networktablet
 Section: unknown
 Priority: optional
-Maintainer: Jarrad Whitaker <jarrad@unknown>
+Maintainer: Jarrad Whitaker <jarrad.whitaker@gmail.com>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.6
-Homepage: <insert the upstream URL, if relevant>
-Vcs-Git: git://github.com/rfc2822/networktablet
+Homepage: http://github.com/rfc2822/GfxTablet
+Vcs-Git: git://github.com/rfc2822/GfxTablet
 #Vcs-Browser: https://anonscm.debian.org/gitweb/?p=collab-maint/networktablet.git;a=summary
 
 Package: networktablet
