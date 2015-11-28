@@ -1,0 +1,19 @@
+Source: networktablet
+Section: unknown
+Priority: optional
+Maintainer: Jarrad Whitaker <jarrad@unknown>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.6
+Homepage: <insert the upstream URL, if relevant>
+Vcs-Git: git://github.com/rfc2822/networktablet
+#Vcs-Browser: https://anonscm.debian.org/gitweb/?p=collab-maint/networktablet.git;a=summary
+
+Package: networktablet
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Fake graphics tablet
+ Networktablet is a program that creates a fake graphics tablet
+ on your PC. This device receives events over a network from a
+ suitable client, and translates those network events into input
+ events. One such client is GfxTablet, available for Android
+ devices.
