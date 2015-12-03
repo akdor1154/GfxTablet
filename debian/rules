@@ -25,7 +25,7 @@ override_dh_auto_install:
 	dh_auto_install -- PREFIX=/usr
 
 override_dh_installudev:
-	dh_installudev -n
+	dh_installudev --name=uinput
 
 # dh_make generated override targets
 # This is example for Cmake (See https://bugs.debian.org/641051 )
