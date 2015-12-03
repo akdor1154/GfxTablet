@@ -1,3 +1,18 @@
+networktablet (1.3.1-1) wily; urgency=medium
+
+  * new upstream release - networktablet now presents as a Tablet device, not Touchscreen.
+  * make uinput device accessible to wheel group
+  * change to use [0, UINT16_MAX) as our range for values instead of [0, INT16_MAX), as per protocol description
+  * update Android client to use [0,UINT16_MAX) as its range of values
+  * use standard-width types and remove pressure ambiguity in protocol documentation
+  * update section
+  * add tablet events, so xinput recognizes this as a Tablet, not a Touchscreen. Also add stylus-in-range pseudo-button and barrel buttons
+  * add button information to documentation
+  * make the android client sent stylus-in-range events if required
+  * add stylus-in-range explanation to documentation
+
+ -- Jarrad Whitaker <jarrad.whitaker@gmail.com>  Thu, 03 Dec 2015 16:45:51 +1100
+
 networktablet (1.3-1) wily; urgency=low
 
   * Initial release
