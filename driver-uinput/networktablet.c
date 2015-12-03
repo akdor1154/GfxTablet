@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #include <linux/input.h>
 #include <linux/uinput.h>
+#include <stdint.h>
 #include "protocol.h"
 
 #define die(str, args...) { \
@@ -34,6 +35,12 @@ void init_device(int fd)
 		die("error: ioctl UI_SET_EVBIT EV_KEY");
 	if (ioctl(fd, UI_SET_KEYBIT, BTN_TOUCH) < 0)
 		die("error: ioctl UI_SET_KEYBIT");
+	if (ioctl(fd, UI_SET_KEYBIT, BTN_TOOL_PEN) < 0)
+		die("error: ioctl UI_SET_KEYBIT");
+	if (ioctl(fd, UI_SET_KEYBIT, BTN_STYLUS) < 0)
+		die("error: ioctl UI_SET_KEYBIT");
+	if (ioctl(fd, UI_SET_KEYBIT, BTN_STYLUS2) < 0)
+		die("error: ioctl UI_SET_KEYBIT");
 
 	// enable 2 main axes + pressure (absolute positioning)
 	if (ioctl(fd, UI_SET_EVBIT, EV_ABS) < 0)
@@ -52,11 +59,11 @@ void init_device(int fd)
 	uidev.id.product = 0x1;
 	uidev.id.version = 1;
 	uidev.absmin[ABS_X] = 0;
-	uidev.absmax[ABS_X] = SHRT_MAX;
+	uidev.absmax[ABS_X] = UINT16_MAX;
 	uidev.absmin[ABS_Y] = 0;
-	uidev.absmax[ABS_Y] = SHRT_MAX;
+	uidev.absmax[ABS_Y] = UINT16_MAX;
 	uidev.absmin[ABS_PRESSURE] = 0;
-	uidev.absmax[ABS_PRESSURE] = SHRT_MAX/2;
+	uidev.absmax[ABS_PRESSURE] = INT16_MAX;
 	if (write(fd, &uidev, sizeof(uidev)) < 0)
 		die("error: write");
 
@@ -132,7 +139,7 @@ int main(void)
 		ev_pkt.x = ntohs(ev_pkt.x);
 		ev_pkt.y = ntohs(ev_pkt.y);
 		ev_pkt.pressure = ntohs(ev_pkt.pressure);
-		printf("x: %hi, y: %hi, pressure: %hi\n", ev_pkt.x, ev_pkt.y, ev_pkt.pressure);
+		printf("x: %hu, y: %hu, pressure: %hu\n", ev_pkt.x, ev_pkt.y, ev_pkt.pressure);
 
 		send_event(device, EV_ABS, ABS_X, ev_pkt.x);
 		send_event(device, EV_ABS, ABS_Y, ev_pkt.y);
@@ -143,8 +150,19 @@ int main(void)
 				send_event(device, EV_SYN, SYN_REPORT, 1);
 				break;
 			case EVENT_TYPE_BUTTON:
+				// stylus hovering
+				if (ev_pkt.button == -1)
+					send_event(device, EV_KEY, BTN_TOOL_PEN, ev_pkt.down);
+				// stylus touching
 				if (ev_pkt.button == 0)
 					send_event(device, EV_KEY, BTN_TOUCH, ev_pkt.down);
+				// button 1
+				if (ev_pkt.button == 1)
+					send_event(device, EV_KEY, BTN_STYLUS, ev_pkt.down);
+				// button 2
+				if (ev_pkt.button == 2)
+					send_event(device, EV_KEY, BTN_STYLUS2, ev_pkt.down);
+				printf("sent button: %hhi, %hhu\n", ev_pkt.button, ev_pkt.down);
 				send_event(device, EV_SYN, SYN_REPORT, 1);
 				break;
 
