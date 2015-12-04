@@ -1,2 +1,2 @@
-KERNEL=="uinput", GROUP="wheel"
+KERNEL=="uinput", TAG+="uaccess"
 
